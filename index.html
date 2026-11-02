@@ -241,6 +241,7 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
       <a class="btn" id="buy-bottom" href="#order">Order an X-ray</a>
     </div>
     <p class="note" id="order-note" hidden>Checkout opens on launch day.</p>
+    <p class="note" id="contact" hidden>Questions? <a href="#order"></a></p>
   </section>
 
   <footer>
@@ -248,13 +249,20 @@ code, .mono { font-family: var(--mono); font-size: 0.92em; }
   </footer>
 </div>
 
+<script src="config.js"></script>
 <script>
-  // Set this to the Stripe Payment Link on launch day.
-  const PAY_URL = "";
+  const CFG = window.XRAY_CONFIG || {};
   for (const id of ["buy-top", "buy-bottom"]) {
     const a = document.getElementById(id);
-    if (PAY_URL) { a.href = PAY_URL; a.target = "_blank"; a.rel = "noopener"; }
+    if (CFG.ORDER_URL) { a.href = CFG.ORDER_URL; a.target = "_blank"; a.rel = "noopener"; }
     else a.addEventListener("click", () => { document.getElementById("order-note").hidden = false; });
+  }
+  if (CFG.CONTACT_EMAIL) {
+    const c = document.getElementById("contact");
+    const m = c.querySelector("a");
+    m.href = "mailto:" + CFG.CONTACT_EMAIL;
+    m.textContent = CFG.CONTACT_EMAIL;
+    c.hidden = false;
   }
 </script>
 
